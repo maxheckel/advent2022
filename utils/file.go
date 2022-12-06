@@ -18,6 +18,10 @@ func ReadInputLines(path string) ([]string, error) {
 	return strings.Split(string(dat), "\n"), nil
 }
 
-func ReadCommaSeparatedInput(path string) ([]string, error) {
-	return nil, nil
+func ReadWholeFile(path string) (string, error) {
+	dat, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	return string(dat), nil
 }
