@@ -31,6 +31,7 @@ func FindRepeatingCharsOfLength(input string, length int) int {
 			continue
 		}
 
+		// Need to reassign the location in memory otherwise i will always have the same value
 		i := i
 		foundChars[r] = &i
 		count++
