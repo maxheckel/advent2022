@@ -22,7 +22,6 @@ type Node struct {
 
 var rootNode *Node
 var currentNode *Node
-var totalSize int32
 
 func main() {
 	buildNodes()
@@ -34,20 +33,15 @@ func main() {
 }
 
 func part1() {
-	getSizesLessThan10k(rootNode)
-	fmt.Println(totalSize)
+	fmt.Println(getSizesLessThan10k(rootNode))
 }
 
 func part2() {
-	flatNodes := []*Node{}
-	flatNodes = addFlatNodes(rootNode)
+	flatNodes := getFlatNodes(rootNode)
 	var minNode *Node
 	minDiff := float64(10000000000000)
 	goalSize := float64(30000000) - (float64(70000000) - float64(rootNode.size))
 	for _, n := range flatNodes {
-		if float64(n.size) < goalSize {
-			continue
-		}
 		thisDiff := math.Abs(float64(n.size) - goalSize)
 		if thisDiff < minDiff {
 			minDiff = thisDiff
@@ -79,7 +73,6 @@ func buildNodes() {
 			fmt.Sscanf(output, "$ %s %s", &cmd, &args)
 			if cmd == "cd" {
 				handleCD(args)
-				continue
 			}
 		default:
 			handleNewNode(output)
@@ -87,7 +80,7 @@ func buildNodes() {
 	}
 }
 
-func addFlatNodes(current *Node) []*Node {
+func getFlatNodes(current *Node) []*Node {
 	var fullList []*Node
 	if current.nodeType == Directory {
 		fullList = append(fullList, current)
@@ -95,14 +88,14 @@ func addFlatNodes(current *Node) []*Node {
 
 	for _, child := range current.children {
 		if child.nodeType == Directory {
-			fullList = append(fullList, addFlatNodes(child)...)
+			fullList = append(fullList, getFlatNodes(child)...)
 		}
 
 	}
 	return fullList
 }
 
-func (n *Node) addNode(newNode *Node) {
+func (n *Node) addChild(newNode *Node) {
 	n.children = append(n.children, newNode)
 	if newNode.nodeType == Directory {
 		return
@@ -114,15 +107,17 @@ func (n *Node) addNode(newNode *Node) {
 	}
 }
 
-func getSizesLessThan10k(node *Node) {
+func getSizesLessThan10k(node *Node) int32 {
+	totalSize := int32(0)
 	if node.nodeType == Directory && node.size <= 100000 {
 		totalSize += node.size
 	}
 	if node.children != nil && len(node.children) > 0 {
 		for _, child := range node.children {
-			getSizesLessThan10k(child)
+			totalSize += getSizesLessThan10k(child)
 		}
 	}
+	return totalSize
 }
 
 func handleNewNode(output string) {
@@ -136,7 +131,7 @@ func handleNewNode(output string) {
 		fmt.Sscanf(output, "dir %s", &nodeName)
 	}
 
-	currentNode.addNode(&Node{
+	currentNode.addChild(&Node{
 		parent:   currentNode,
 		children: []*Node{},
 		nodeType: nodeType,
