@@ -17,7 +17,6 @@ type Node struct {
 	nodeType int
 	name     string
 	size     int32
-	pwd      string
 }
 
 var rootNode *Node
@@ -25,11 +24,8 @@ var currentNode *Node
 
 func main() {
 	buildNodes()
-
 	part1()
-
 	part2()
-
 }
 
 func part1() {
@@ -62,7 +58,6 @@ func buildNodes() {
 		nodeType: Directory,
 		name:     "",
 		size:     0,
-		pwd:      "/",
 	}
 	for i := 0; i < len(input); i++ {
 		output := input[i]
@@ -137,7 +132,6 @@ func handleNewNode(output string) {
 		nodeType: nodeType,
 		name:     nodeName,
 		size:     fileSize,
-		pwd:      currentNode.pwd + "/" + nodeName,
 	})
 }
 
