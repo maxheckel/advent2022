@@ -136,12 +136,6 @@ func handleNewNode(output string) {
 		fmt.Sscanf(output, "dir %s", &nodeName)
 	}
 
-	// Check so we don't add the same file multiple times
-	for _, child := range currentNode.children {
-		if child.name == nodeName && child.nodeType == nodeType {
-			return
-		}
-	}
 	currentNode.addNode(&Node{
 		parent:   currentNode,
 		children: []*Node{},
@@ -153,7 +147,6 @@ func handleNewNode(output string) {
 }
 
 func handleCD(args string) {
-
 	switch args {
 	case "/":
 		currentNode = rootNode
