@@ -80,12 +80,8 @@ func getFlatNodes(current *Node) []*Node {
 	if current.nodeType == Directory {
 		fullList = append(fullList, current)
 	}
-
 	for _, child := range current.children {
-		if child.nodeType == Directory {
-			fullList = append(fullList, getFlatNodes(child)...)
-		}
-
+		fullList = append(fullList, getFlatNodes(child)...)
 	}
 	return fullList
 }
