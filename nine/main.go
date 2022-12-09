@@ -52,6 +52,10 @@ func main() {
 	}
 
 	part1(input)
+	part2(input)
+}
+
+func part2(input []string) {
 	coords := make([]Coords, 10)
 	tailPositions := map[string]bool{}
 	tailPositions[coords[9].String()] = true
