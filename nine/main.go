@@ -50,21 +50,16 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	part1(input)
-	part2(input)
-}
-
-func part2(input []string) {
 	coords := make([]Coords, 10)
-	tailPositions := map[string]bool{}
-	tailPositions[coords[9].String()] = true
+	longTailPositions := map[string]bool{}
+	shortTailPositions := map[string]bool{}
+	longTailPositions[coords[9].String()] = true
+	shortTailPositions[coords[1].String()] = true
 	for _, cmd := range input {
 		var direction string
 		var amount int
 		fmt.Sscanf(cmd, "%s %d", &direction, &amount)
 		for x := 0; x < amount; x++ {
-
 			switch direction {
 			case "R":
 				coords[0].X++
@@ -78,38 +73,10 @@ func part2(input []string) {
 			for i := 1; i < len(coords); i++ {
 				coords[i].MoveTo(&coords[i-1])
 			}
-			tailPositions[coords[9].String()] = true
+			longTailPositions[coords[9].String()] = true
+			shortTailPositions[coords[1].String()] = true
 		}
 	}
-	fmt.Println(len(tailPositions))
-}
-
-func part1(input []string) {
-	// Memoize where the tail has been with x,y being the keys
-	tailPositions := map[string]bool{}
-	headPosition := &Coords{0, 0}
-	tailPosition := &Coords{0, 0}
-	tailPositions[tailPosition.String()] = true
-	for _, cmd := range input {
-		var direction string
-		var amount int
-		fmt.Sscanf(cmd, "%s %d", &direction, &amount)
-		for x := 0; x < amount; x++ {
-
-			switch direction {
-			case "R":
-				headPosition.X++
-			case "U":
-				headPosition.Y++
-			case "D":
-				headPosition.Y--
-			case "L":
-				headPosition.X--
-			}
-			tailPosition.MoveTo(headPosition)
-			tailPositions[tailPosition.String()] = true
-		}
-	}
-
-	fmt.Println(len(tailPositions))
+	fmt.Println(fmt.Sprintf("Part 1: %d", len(shortTailPositions)))
+	fmt.Println(fmt.Sprintf("Part 2: %d", len(longTailPositions)))
 }
