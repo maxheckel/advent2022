@@ -49,24 +49,14 @@ func main() {
 
 }
 
-func greatestCommonDenominator(a, b int64) int64 {
-	for b != 0 {
-		a, b = b, a%b
-	}
-	return a
-}
-
-func leastCommonMultiplier(a, b int64) int64 {
-	return a * b / greatestCommonDenominator(a, b)
-}
-
 func part2(monkeys []*Monkey) {
 	modVal := new(big.Int)
 	zero := big.NewInt(0)
 
+	// All the divisors are prime!!!
 	leastCommonMultiple := int64(1)
 	for _, m := range monkeys {
-		leastCommonMultiple = leastCommonMultiplier(leastCommonMultiple, m.testConstant.Int64())
+		leastCommonMultiple = m.testConstant.Int64() * leastCommonMultiple
 	}
 	for x := 0; x < 10000; x++ {
 		for _, m := range monkeys {
