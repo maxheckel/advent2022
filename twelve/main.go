@@ -42,19 +42,6 @@ func main() {
 	fmt.Println(visited[shortest])
 }
 
-func (n *Node) BreadthFirstSearch(array []rune) []rune {
-	queue := []*Node{n}
-	for len(queue) > 0 {
-		current := queue[0]
-		queue = queue[1:]
-		array = append(array, current.Val)
-		for _, child := range n.Children {
-			queue = append(queue, child)
-		}
-	}
-	return array
-}
-
 func buildNodeList(input []string) []*Node {
 	terrain := make([][]*Node, len(input))
 	for y, line := range input {
